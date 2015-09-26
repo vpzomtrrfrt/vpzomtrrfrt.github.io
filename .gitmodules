@@ -1,0 +1,3 @@
+[submodule "DSON"]
+	path = DSON
+	url = https://github.com/dogescript/DSON.git
