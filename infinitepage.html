@@ -1,0 +1,22 @@
+<html>
+	<head>
+		<title>Infinite Page</title>
+		<script type="text/javascript">
+			function moreStuff() {
+				while(document.body.offsetHeight-document.body.scrollTop < window.innerHeight+30) {
+					var h1 = document.createElement('h1');
+					h1.textContent = Math.random();
+					document.body.appendChild(h1);
+				}
+			}
+			window.onscroll = function() {
+				moreStuff();
+			};
+			window.onload = function() {
+				moreStuff();
+			};
+		</script>
+	</head>
+	<body>
+	</body>
+</html>
