@@ -1,0 +1,117 @@
+<html>
+	<head>
+		<title>KA Pixels generator</title>
+		<script type="text/javascript">
+			var cnvs = document.createElement('canvas');
+			var ctx = cnvs.getContext('2d');
+			var task = null;
+			var lastEnc = null;
+			window.onload = function() {
+				document.getElementById('fileinput').onchange = function(e) {
+					document.getElementById('thebox').style.display="none";
+
+					var img = new Image;
+					img.onload = function() {
+						cnvs.width = this.width;
+						cnvs.height = this.height;
+						ctx.drawImage(this, 0, 0);
+						URL.revokeObjectURL(this.src);
+						document.getElementById('thebox').style.display="initial";
+						if(lastEnc != null) {
+							task = {encoder: lastEnc};
+						}
+					};
+					img.src = URL.createObjectURL(e.target.files[0]);
+				};
+				var encoders = [
+					["Better Pixels", "1137252397", function(pos, x, y, r, g, b, a) {
+						var tr = "";
+						if(pos == 0) {
+							tr += "[[";
+						}
+						if(x == 0 && pos != 0) {
+							tr += "],[";
+						}
+						if(x != 0) {
+							tr += ",";
+						}
+						if(a != 255) {
+							tr += "["+r+","+g+","+b+","+a+"]";
+						}
+						else if(r == g && g == b) {
+							tr += "["+r+"]";
+						}
+						else {
+							tr += "["+r+","+g+","+b+"]";
+						}
+						return tr;
+					}, "]]"]
+				];
+				for(var i = 0; i < encoders.length; i++) {
+					var btn = document.createElement('input');
+					btn.type = "radio";
+					btn.name = "encoder";
+					btn.value = i;
+					btn.onclick = function() {
+						task = {encoder: this.value};
+						lastEnc = this.value;
+					};
+					var a = document.createElement('a');
+					a.href = "https://khanacademy.org/cs/"+encoders[i][0].toLowerCase().replace(" ", "-")+"/"+encoders[i][1];
+					a.textContent = "(link)";
+					var label = document.createElement('label');
+					label.appendChild(btn);
+					label.appendChild(document.createTextNode(encoders[i][0]+" "));
+					label.appendChild(a);
+					document.getElementById('selbox').appendChild(label);
+					document.getElementById('selbox').appendChild(document.createElement('br'));
+				}
+				var doSome = function() {
+					if(task != null) {
+						if(!("pos" in task)) {
+							task.pos = 0;
+							task.data = ctx.getImageData(0, 0, cnvs.width, cnvs.height).data;
+							task.tr = "";
+							document.getElementById('area').value = "";
+						}
+						else {
+							if(task.pos*4 >= task.data.length) {
+								document.getElementById('area').value = task.tr+encoders[task.encoder][3];
+								task = null;
+							}
+							else {
+								var w = cnvs.width;
+								var y = Math.floor(task.pos/w);
+								var x = task.pos%w;
+								var r = task.data[task.pos*4];
+								var g = task.data[task.pos*4+1];
+								var b = task.data[task.pos*4+2];
+								var a = task.data[task.pos*4+3];
+								task.tr += encoders[task.encoder][2](task.pos, x, y, r, g, b, a);
+								task.pos++;
+								var val = task.pos*4/task.data.length;
+								document.getElementById('prog').value = val;
+							}
+						}
+					}
+				};
+				setInterval(function() {
+					for(var i = 0; (task != null && i < 50); i++) {
+						doSome();
+					}
+				}, 1);
+			};
+		</script>
+	</head>
+	<body>
+		<center>
+			<h1>KA Pixels generator</h1>
+			<input type="file" id="fileinput" />
+			<div id="thebox" style="display: none">
+				<div id="selbox"></div>
+				<progress id="prog" min=0 max=1 value=0></progress><br />
+				<textarea id="area"></textarea>
+			</div>
+		</center>
+	</body>
+</html>
