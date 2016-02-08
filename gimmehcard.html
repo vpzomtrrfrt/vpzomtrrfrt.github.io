@@ -1,0 +1,50 @@
+<html>
+	<head>
+		<title>GimmehCard</title>
+		<script type="text/javascript">
+			var randomElement = function(obj, typ) {
+				var e = obj[typ];
+				var poss = e[0];
+				var repl = [];
+				if(e.length > 1) {
+					repl = e[1];
+				}
+				var ch = poss[Math.floor(Math.random()*poss.length)];
+				var tr = "";
+				for(var i = 0; i < ch.length; i++) {
+					var c = ch[i];
+					if(c == "$") {
+						i++;
+						var n = parseInt(ch[i], 36);
+						tr += randomElement(obj, repl[n-1]);
+					}
+					else {
+						tr += c;
+					}
+				}
+				return tr;
+			};
+			var getNewCard = function() {
+				document.getElementById('res').textContent = randomElement(obj, "card");
+			};
+			window.onload = function() {
+				var xhr = new XMLHttpRequest();
+				xhr.open("get", "hscardvocab.json");
+				xhr.onload = function() {
+					obj = JSON.parse(this.responseText);
+					var btn = document.getElementById('btn');
+					btn.style.display = "inherit";
+					btn.onclick = getNewCard;
+					getNewCard();
+				};
+				xhr.send();
+			};
+		</script>
+	</head>
+	<body>
+		<center>
+			<pre id="res">Loading...</pre>
+			<button id="btn" style="display: none">Generate</button>
+		</center>
+	</body>
+</html>
