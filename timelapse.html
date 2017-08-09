@@ -1,0 +1,67 @@
+<html>
+	<head>
+		<title>Timelapse Creator by VpzomTrrfrt</title>
+		<script type="text/javascript">
+		window.onload = function() {
+			var vid = document.getElementById('vid');
+			var interv;
+			var vframes = [];
+			var go = function() {
+				var c = document.createElement('canvas');
+				c.width=640;
+				c.height=480;
+				c.getContext('2d').drawImage(vid,0,0,640,480);
+				vframes.push(c);
+			};
+			var gUM;
+			if(navigator.webkitGetUserMedia) {gUM = navigator.webkitGetUserMedia;} else if(navigator.mozGetUserMedia) {gUM = navigator.mozGetUserMedia;} else {gUM = navigator.getUserMedia;}
+			if(gUM) {
+				document.getElementById('stat').innerHTML="Your browser supports the functionality used here.";
+			}
+			else {
+				document.getElementById('stat').innerHTML="Your browser does not support the functionality used here.  Try Google Chrome or Opera.";
+			}
+			document.getElementById('start').onclick = function() {
+				gUM.call(navigator,{video: true}, function(s) {
+					document.getElementById('cnvs').getContext('2d').fillRect(25,25,50,50);
+					vid.src=window.URL.createObjectURL(s);
+					console.log(vid.src);
+					interv = setInterval(go,120);
+				}, function(e) {alert("Error: "+e);});
+				return false;
+			};
+			var pos = 0;
+			var show = function() {
+				document.getElementById('cnvs').getContext('2d').drawImage(vframes[pos],0,0);
+				pos++;
+				if(pos>=vframes.length) {
+					clearInterval(interv);
+				}
+			};
+			document.getElementById('stop').onclick = function() {
+				console.log("stuff");
+				if(interv) {
+					clearInterval(interv);
+					interv = setInterval(show,20);
+				}
+				return false;
+			};
+			document.getElementById('replay').onclick = function() {
+				if(vframes) {
+					pos=0;
+					interv=setInterval(show,20);
+				}
+				return false;
+			};
+		};
+		</script>
+	</head>
+	<body>
+		<pre id="stat"></pre>
+		<canvas id="cnvs" width="640px" height="480px"></canvas>
+		<button id="start">Start</button>
+		<button id="stop">Stop</button>
+		<button id="replay">Replay</button>
+		<video id="vid" autoplay="" style="display: none"></video>
+	</body>
+</html>
