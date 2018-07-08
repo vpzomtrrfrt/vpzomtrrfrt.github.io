@@ -119,6 +119,8 @@
 <span id="119">119</span>
 <span id="120">120</span>
 <span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
 </pre><pre class="rust ">
 <span class="kw">use</span> <span class="ident">futures</span>;
 <span class="kw">use</span> <span class="ident">hyper</span>;
@@ -131,6 +133,8 @@
 <span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">Future</span>, <span class="ident">IntoFuture</span>, <span class="ident">Stream</span>};
 
 <span class="kw">mod</span> <span class="ident">stream</span>;
+
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">stream</span>::<span class="ident">GatewayConnection</span>;
 
 <span class="doccomment">/// Object used to interact with the Discord API</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Client</span> {
