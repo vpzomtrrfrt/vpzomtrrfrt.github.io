@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Event","Known events that may be received"]],"struct":[["Myself","Data about the current user. (relevant Discord docs)"],["ReadyData","Object contained in [`Event::Ready`]"],["ReceivedMessage","Message received from a channel"],["User","Data about a Discord User. (relevant Discord docs)"]],"type":[["Snowflake","Type used for IDs"]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Error","Error type for noob functions"]],"mod":[["builder","Objects for sending messages"],["events","Events and related objects"]],"struct":[["Client","Object used to interact with the Discord API"]]});
