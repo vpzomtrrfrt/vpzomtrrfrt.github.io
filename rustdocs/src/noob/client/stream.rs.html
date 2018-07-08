@@ -294,6 +294,8 @@
 <span id="294">294</span>
 <span id="295">295</span>
 <span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
 </pre><pre class="rust ">
 <span class="kw">use</span> <span class="ident">futures</span>;
 <span class="kw">use</span> <span class="ident">serde_json</span>;
@@ -308,6 +310,7 @@
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
 <span class="kw">use</span> <span class="ident">tokio</span>::<span class="ident">executor</span>::<span class="ident">Executor</span>;
 
+<span class="doccomment">/// Stream of gateway events</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GatewayConnection</span> {
     <span class="ident">token</span>: <span class="ident">String</span>,
     <span class="ident">url</span>: <span class="ident">websocket</span>::<span class="ident">client</span>::<span class="ident">builder</span>::<span class="ident">Url</span>,
@@ -325,6 +328,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">GatewayConnection</span> {
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">connect_new</span>(<span class="ident">url</span>: <span class="ident">websocket</span>::<span class="ident">client</span>::<span class="ident">builder</span>::<span class="ident">Url</span>, <span class="ident">token</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">state</span>: <span class="ident">ConnectionState</span>::<span class="ident">Pending</span>(<span class="ident">GatewayConnection</span>::<span class="ident">connect</span>(<span class="kw-2">&amp;</span><span class="ident">token</span>, <span class="kw-2">&amp;</span><span class="ident">url</span>, <span class="prelude-val">None</span>)),
